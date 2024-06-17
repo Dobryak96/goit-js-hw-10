@@ -4,12 +4,62 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Page 3</title>
+    <title>Promise generator</title>
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <section>
-      <a href="./index.html">Go to home</a>
-      <h1>Welcome to page 3</h1>
+      <a href="./index.html" class="link">Go to home</a>
+      <h1 class="title">
+        Welcome to <span class="accent">Promise generator</span> page
+      </h1>
     </section>
+    <main>
+      <form class="form">
+        <label class="delay-label">
+          Delay (ms)
+          <input
+            class="delay-input"
+            type="number"
+            name="delay"
+            min="0"
+            max="10000"
+            step="1000"
+          />
+        </label>
+
+        <fieldset class="state">
+          <legend class="state-legend">State</legend>
+          <label class="state-label">
+            <input
+              class="fulfilled-input"
+              type="radio"
+              name="state"
+              value="fulfilled"
+            />
+            Fulfilled
+          </label>
+          <label class="state-label">
+            <input
+              class="rejected-input"
+              type="radio"
+              name="state"
+              value="rejected"
+            />
+            Rejected
+          </label>
+        </fieldset>
+
+        <button class="create-btn" type="submit">Create notification</button>
+      </form>
+    </main>
+
+    <script type="module" src="./js/2-snackbar.js"></script>
   </body>
 </html>
