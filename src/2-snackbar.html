@@ -4,61 +4,34 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Promise generator</title>
-    <link rel="stylesheet" href="./css/styles.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="stylesheet" href="./css/2-snackbar.css" />
+    <title>Snackbar</title>
   </head>
+
   <body>
     <section>
-      <a href="./index.html" class="link">Go to home</a>
-      <h1 class="title">
-        Welcome to <span class="accent">Promise generator</span> page
-      </h1>
+      <a href="./index.html">Go back</a>
     </section>
-    <main>
-      <form class="form">
-        <label class="delay-label">
-          Delay (ms)
-          <input
-            class="delay-input"
-            type="number"
-            name="delay"
-            min="0"
-            max="10000"
-            step="1000"
-          />
+    <form class="form">
+      <label>
+        Delay (ms)
+        <input type="number" name="delay" required />
+      </label>
+
+      <fieldset>
+        <legend>State</legend>
+        <label>
+          <input type="radio" name="state" value="fulfilled" required />
+          Fulfilled
         </label>
+        <label>
+          <input type="radio" name="state" value="rejected" required />
+          Rejected
+        </label>
+      </fieldset>
 
-        <fieldset class="state">
-          <legend class="state-legend">State</legend>
-          <label class="state-label">
-            <input
-              class="fulfilled-input"
-              type="radio"
-              name="state"
-              value="fulfilled"
-            />
-            Fulfilled
-          </label>
-          <label class="state-label">
-            <input
-              class="rejected-input"
-              type="radio"
-              name="state"
-              value="rejected"
-            />
-            Rejected
-          </label>
-        </fieldset>
-
-        <button class="create-btn" type="submit">Create notification</button>
-      </form>
-    </main>
+      <button type="submit">Create notification</button>
+    </form>
 
     <script type="module" src="./js/2-snackbar.js"></script>
   </body>
