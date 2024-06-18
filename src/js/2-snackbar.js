@@ -1,5 +1,3 @@
-'use strict';
-
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 import imageUrlSecond from '../img/green.png';
