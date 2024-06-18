@@ -1,55 +1,68 @@
-import iziToast from "izitoast";
-import "izitoast/dist/css/iziToast.min.css";
-import imageUrlSecond from '../img/green.png';
-import imageUrl from '../img/close.png';
+'use strict';
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
+import '../css/snackbar.css';
+import imageUrl from '../img/izitoast/bi_check2-circle.png';
+import imageErrUrl from '../img/izitoast/bi_x-octagon.png';
 
-const form = document.querySelector('form');
+const inputEl = document
+  .querySelector('.form')
+  .addEventListener('submit', promiseFoo);
+function promiseFoo(e) {
+  e.preventDefault(); // Зупиняємо стандартну поведінку форми
 
-form.addEventListener('submit', e => {
-  e.preventDefault();
-  const { delay, state } = e.currentTarget.elements;
-  console.log(+delay.value);
-  console.log(state.value);
+  const delay = e.target.delay.value;
+  const state = document.querySelector('input[name="state"]:checked').value;
 
-  const promise = new Promise((resolve, reject) => {
+  new Promise((resolve, reject) => {
     setTimeout(() => {
-      if (state.value === 'fulfilled') {
-        resolve(delay.value);
+      if (state === 'fulfilled') {
+        resolve(delay);
       } else {
-        reject(delay.value);
+        reject(delay);
       }
-    }, +delay.value);
-  });
-
-  promise
+    }, delay);
+  })
     .then(delay => {
       iziToast.success({
+        message: `Fulfilled promise in ${delay} ms`,
+        messageColor: '#fff',
+        messageSize: '16',
+        messageLineHeight: '24',
         title: 'OK',
-        message: `Fulfilled promise in ${delay}ms`,
         titleColor: '#fff',
-        titleSize: '16px',
+        titleSize: '16',
+        titleLineHeight: '24',
+        backgroundColor: '#59A10D',
         position: 'topRight',
-        backgroundColor: 'green',
-        messageColor: 'white',
-        theme: 'dark',
-        iconUrl: imageUrlSecond,
+        close: true,
+        closeOnEscape: true,
+        closeOnClick: true,
+        progressBar: true,
+        progressBarColor: '#326101',
+        iconUrl: imageUrl,
+        imageWidth: 24,
       });
     })
     .catch(delay => {
       iziToast.error({
-        title: 'Error',
         message: `Rejected promise in ${delay}ms`,
+        messageSize: '16',
+        messageColor: '#fff',
+        messageLineHeight: '24',
+        title: 'Error',
         titleColor: '#fff',
-        titleSize: '16px',
+        titleSize: '16',
+        titleLineHeight: '24',
+        backgroundColor: '#EF4040',
         position: 'topRight',
-        backgroundColor: 'red',
-        messageColor: 'white',
-        iconUrl: imageUrl,
-        theme: 'dark',
+        close: true,
+        closeOnEscape: true,
+        closeOnClick: true,
+        progressBar: true,
+        progressBarColor: '#B51B1B',
+        iconUrl: imageErrUrl,
+        imageWidth: 24,
       });
     });
-
-  setTimeout(() => {
-    form.reset();
-  }, 3000);
-});
+}
