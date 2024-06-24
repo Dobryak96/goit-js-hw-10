@@ -1,49 +1,95 @@
-'use strict';
-import flatpickr from 'flatpickr';
-import 'flatpickr/dist/flatpickr.min.css';
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
-import '../css/timer.css';
-import imageUrl from '../img/izitoast/bi_x-octagon.png'
+import flatpickr from "flatpickr";
+import  "flatpickr/dist/themes/material_orange.css";
+
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
+import imageUrl from '../img/icon-error.svg';
 
 const refs = {
-  datetimePicker: document.querySelector('#datetime-picker'),
-  input: document.querySelector('#datetime-picker'),
+  selectInput: document.getElementById('datetime-picker'),
   startBtn: document.querySelector('[data-start]'),
-  daysEl: document.querySelector('[data-days]'),
-  hoursEl: document.querySelector('[data-hours]'),
-  minutesEl: document.querySelector('[data-minutes]'),
-  secondsEl: document.querySelector('[data-seconds]'),
+  daysField: document.querySelector('[data-days]'),
+  hoursField: document.querySelector('[data-hours]'),
+  minutesField: document.querySelector('[data-minutes]'),
+  secondsField: document.querySelector('[data-seconds]'),
+}
+
+refs.startBtn.disabled = true;
+
+let userSelectedDate;
+    
+const options = {
+  enableTime: true,
+  time_24hr: true,
+  defaultDate: new Date(),
+  minuteIncrement: 1,
+  onClose(selectedDates) {
+    userSelectedDate = selectedDates[0];
+    const currentDate = new Date();
+    if (userSelectedDate <= currentDate) {
+      iziToast.error({
+        title: 'Error!',
+        titleColor: '#fff', 
+        message: 'Please choose a date in the future!',
+        messageSize: '16',
+        messageColor: '#fff',        
+        backgroundColor: '#ef4040',
+        imageWidth: 302,
+        position: 'topRight',
+        theme: 'dark',
+        close: true,
+        closeOnEscape: true,
+        closeOnClick: true,
+        progressBar: true,
+        progressBarColor: '#b51b1b',
+        transitionIn: 'fadeInDown',
+        transitionOut: 'fadeOutUp',
+        iconUrl: imageUrl,
+        iconColor: '#fafafb',
+      });
+      console.log('Wrong Date! \nPlease choose a date in the future!');
+      refs.startBtn.disabled = true;
+    } else {
+      refs.startBtn.disabled = false;
+    };
+  },
 };
 
-let initTime = 0;
+flatpickr(refs.selectInput, options);
 
-refs.startBtn.addEventListener('click', (e) => {
-  const intervalId = setInterval(() => {
-    // const currentTime = Date.now();
-    const diff = initTime - Date.now(); 
-    const time = convertMs(diff);
-    // const timeObj = getTime(time);
-    renderTime(initTime)
-    // refs.days.textContent = timeObj.days;
-    // refs.hours.textContent = timeObj.hours;
-    // refs.minutes.textContent = timeObj.minutes;
-    // refs.seconds.textContent = timeObj.seconds;
-    
-  }, 1000)
-
-  refs. startBtn.classList.remove('button-normal');
-  refs. startBtn.setAttribute('disabled', 'true');
-  refs.input.setAttribute('disabled', 'true');
-  setTimeout(() => {
-    clearInterval(intervalId);
-    refs.input.removeAttribute('disabled',);
-  }, initTime - Date.now());
-  
-  
-})
+let timeLeft;
+refs.startBtn.addEventListener('click', () => {
+    refs.startBtn.disabled = true;
+    refs.selectInput.disabled = true;
+    timeLeft = setInterval(convertMs, 1000);
+});
 
 function convertMs(ms) {
+  const endTime = userSelectedDate.getTime();
+  const currentTime = Date.now();
+  ms = endTime - currentTime;
+  if (ms < 0) {
+    clearInterval(timeLeft);
+    console.log('Time Is Up!');
+    iziToast.info({
+      title: 'Hey!',
+      titleColor: '#fff',
+      message: 'Time Is Up!',
+      messageSize: '16',
+      messageColor: '#fff',
+      backgroundColor: 'green',
+      position: 'center',
+      theme: 'dark',
+      close: false,
+      closeOnEscape: true,
+      closeOnClick: true,
+      transitionIn: 'bounceInLeft',
+      transitionOut: 'fadeOutLeft',
+    });
+    refs.selectInput.disabled = false;
+    return;
+    };
+
   // Number of milliseconds per unit of time
   const second = 1000;
   const minute = second * 60;
@@ -59,51 +105,12 @@ function convertMs(ms) {
   // Remaining seconds
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
-  return { days, hours, minutes, seconds };
-}
-function renderTime(time) {
-  const diff = initTime - Date.now();
-  const obj = convertMs(diff);
-  console.log(obj);
-  refs.daysEl.innerText = String(obj.days).padStart(2, '0');
-  refs.hoursEl.innerText = String(obj.hours).padStart(2, '0');
-  refs.minutesEl.innerText = String(obj.minutes).padStart(2, '0');
-  refs.secondsEl.innerText = String(obj.seconds).padStart(2, '0');
-}
-      
-      const flatpickrOptions = {
-        enableTime: true,
-        time_24hr: true,
-        defaultDate: new Date(),
-        minuteIncrement: 1,
-        onClose(selectedDates) {
-          const userDate = selectedDates[0];
-          initTime = userDate.getTime();
-          if (initTime > Date.now()) {
-            refs.startBtn.removeAttribute('disabled', '');
-            refs.startBtn.classList.add('button-normal');
-          } else {
-            iziToast.show(iziToastOptions);
-            refs.startBtn.classList.remove('button-normal');
-            refs.startBtn.setAttribute('disabled', 'true');
-          }
-        },
-      };
-      const iziToastOptions = {
-            position: 'topRight',
-            title: 'Error',
-            titleColor: '#fff',
-            titleSize: '16',
-            titleLineHeight: '24',
-            message: "Please choose a date in the future",
-            messageColor: '#fff',
-            messageSize: '16',
-            messageLineHeight: '24',
-            progressBarColor: '#B51B1B',                   
-            backgroundColor: '#EF4040',
-            iconUrl: imageUrl,
-            imageWidth: 24,
-            
-    };
+  function addLeadingZero(value) {
+    return String(value).padStart(2, '0');
+  };
 
-flatpickr('#datetime-picker', flatpickrOptions);
+  refs.daysField.textContent = addLeadingZero(days);
+  refs.hoursField.textContent = addLeadingZero(hours);
+  refs.minutesField.textContent = addLeadingZero(minutes);
+  refs.secondsField.textContent = addLeadingZero(seconds);
+}

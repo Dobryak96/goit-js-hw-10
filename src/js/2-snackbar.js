@@ -1,68 +1,81 @@
-'use strict';
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
-import '../css/snackbar.css';
-import imageUrl from '../img/izitoast/bi_check2-circle.png';
-import imageErrUrl from '../img/izitoast/bi_x-octagon.png';
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
+import imageUrlError from '../img/icon-error.svg';
+import imageUrlSuccess from '../img/icon-success.svg';
+import imageUrlAttention from '../img/icon-attention.svg';
 
-const inputEl = document
-  .querySelector('.form')
-  .addEventListener('submit', promiseFoo);
-function promiseFoo(e) {
-  e.preventDefault(); // Зупиняємо стандартну поведінку форми
+const form = document.querySelector('.form');
 
-  const delay = e.target.delay.value;
-  const state = document.querySelector('input[name="state"]:checked').value;
+form.addEventListener('submit', createPromise);
 
-  new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (state === 'fulfilled') {
-        resolve(delay);
-      } else {
-        reject(delay);
-      }
-    }, delay);
-  })
-    .then(delay => {
-      iziToast.success({
-        message: `Fulfilled promise in ${delay} ms`,
-        messageColor: '#fff',
-        messageSize: '16',
-        messageLineHeight: '24',
-        title: 'OK',
-        titleColor: '#fff',
-        titleSize: '16',
-        titleLineHeight: '24',
-        backgroundColor: '#59A10D',
-        position: 'topRight',
-        close: true,
-        closeOnEscape: true,
-        closeOnClick: true,
-        progressBar: true,
-        progressBarColor: '#326101',
-        iconUrl: imageUrl,
-        imageWidth: 24,
-      });
+function createPromise(event) {
+    event.preventDefault();
+
+    const delay = event.target.elements.delay.value;
+    const state = event.target.elements.state.value;
+
+    if (!delay || !state) {
+        iziToast.warning({
+            title: 'Attention!',
+            titleSize: '16',
+            titleColor: 'red',
+            message: 'You need to set Delay or State!',
+            messageSize: '16',
+            messageColor: 'red',
+            backgroundColor: 'yellow',
+            position: 'topRight',
+            iconUrl: imageUrlAttention,
+        });
+        console.log('⚠️ Attention: Field delay or state is empty!');
+        return;
+    }
+
+    new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            state === 'fulfilled' ? resolve(delay) : reject(delay);
+        }, delay);
+    })        
+    .then((result) => {
+        iziToast.success({
+                title: 'OK',
+                titleSize: '16',
+                titleColor: '#fff', 
+                message: `Fulfilled promise in ${result}ms`,
+                messageSize: '16',
+                messageColor: '#fff',        
+                backgroundColor: '#59a10d',
+                position: 'topRight',
+                theme: 'dark',
+                close: true,
+                closeOnEscape: true,
+                closeOnClick: true,
+                progressBar: true,
+                progressBarColor: '#326101',
+                iconUrl: imageUrlSuccess,
+                iconColor: '#fff',
+        });
+        console.log(`✅ Fulfilled promise in ${result}ms`);
     })
-    .catch(delay => {
-      iziToast.error({
-        message: `Rejected promise in ${delay}ms`,
-        messageSize: '16',
-        messageColor: '#fff',
-        messageLineHeight: '24',
-        title: 'Error',
-        titleColor: '#fff',
-        titleSize: '16',
-        titleLineHeight: '24',
-        backgroundColor: '#EF4040',
-        position: 'topRight',
-        close: true,
-        closeOnEscape: true,
-        closeOnClick: true,
-        progressBar: true,
-        progressBarColor: '#B51B1B',
-        iconUrl: imageErrUrl,
-        imageWidth: 24,
-      });
+        
+    .catch((error) => {
+        iziToast.error({
+                title: 'Error!',
+                titleSize: '16',
+                titleColor: '#fff', 
+                message: `Rejected promise in ${error}ms`,
+                messageSize: '16',
+                messageColor: '#fff',        
+                backgroundColor: '#ef4040',
+                position: 'topRight',
+                theme: 'dark',
+                close: true,
+                closeOnEscape: true,
+                closeOnClick: true,
+                progressBar: true,
+                progressBarColor: '#ffbebe',
+                iconUrl: imageUrlError,
+                iconColor: '#fff',
+        });
+        console.log(`❌ Rejected promise in ${error}ms`);
     });
-}
+};
