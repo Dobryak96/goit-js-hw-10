@@ -5,17 +5,11 @@
 }
 
 .link:hover {
-  color: tomato;
   text-decoration: underline;
 }
 
 .title {
   margin: 30px auto 50px 156px;
-}
-
-.accent {
-  color: tomato;
-  font-weight: 700;
 }
 
 #datetime-picker {
@@ -30,7 +24,8 @@
   letter-spacing: 0.04em;
   color: #2e2f42;
   background-color: #fff;
-  margin-left: 156px;
+  margin-top: 70px;
+  margin-left: 20px;
   margin-bottom: 32px;
   margin-right: 8px;
 }
@@ -55,7 +50,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-left: 156px;
+  margin-left: 20px;
 }
 
 .field {

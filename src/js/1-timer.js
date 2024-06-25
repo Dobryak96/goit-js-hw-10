@@ -1,5 +1,5 @@
 import flatpickr from "flatpickr";
-import  "flatpickr/dist/themes/material_orange.css";
+import  "flatpickr/dist/themes/material_blue.css";
 
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
