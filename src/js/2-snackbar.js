@@ -37,6 +37,7 @@ function createPromise(event) {
     })        
     .then((result) => {
         iziToast.success({
+                maxWidth: '1000',
                 title: 'OK',
                 titleSize: '16',
                 titleColor: '#fff', 

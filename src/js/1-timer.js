@@ -30,6 +30,7 @@ const options = {
       iziToast.error({
         title: 'Error!',
         titleColor: '#fff', 
+        
         message: 'Please choose a date in the future!',
         messageSize: '16',
         messageColor: '#fff',        
